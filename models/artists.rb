@@ -9,6 +9,15 @@ class Artists
     @id = options['id'].to_i if options['id']
     @name = options['name']
   end
+  def album()
+    sql = "SELECT * FROM albums
+    WHERE id = $1;"
+
+    values = [@title, @genre, @album_id]
+    result = SqlRunner.run(sql, values)
+    album_hash = result[0]
+    return Albums.new(album_hash)
+  end
 
   def save()
     sql = "INSERT INTO artists(name)
@@ -43,9 +52,16 @@ class Artists
   end
 
   def Artists.select()
-sql = "SELECT * FROM artist WHERE id = $1"
-artists = SqlRunner.run(sql)
-return artists.map { |artist_hash| Artists.new(artist_hash) }
+    sql = "SELECT * FROM artist WHERE id = $1"
+    artists = SqlRunner.run(sql)
+    return artists.map { |artist_hash| Artists.new(artist_hash) }
+  end
+
+  def Artists.find(id)
+    sql = "SELECT * FROM artists WHERE id = $1;"
+    values = [id]
+    finds = SqlRunner.run(sql, values)
+    return finds.map { |find| Artists.new(find) }
   end
 
 end #end of class
