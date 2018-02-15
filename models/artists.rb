@@ -9,6 +9,7 @@ class Artists
     @id = options['id'].to_i if options['id']
     @name = options['name']
   end
+
   def album()
     sql = "SELECT * FROM albums
     WHERE id = $1;"
